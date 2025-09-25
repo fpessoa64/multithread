@@ -1,0 +1,11 @@
+package types
+
+type Result struct {
+	Source string
+	Data   map[string]interface{}
+	Err    error
+}
+
+type ConsultCep interface {
+	Fetch(cep string) Result
+}
