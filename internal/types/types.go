@@ -7,5 +7,5 @@ type Result struct {
 }
 
 type ConsultCep interface {
-	Fetch(cep string) Result
+	Fetch(cep string, ch chan<- Result)
 }

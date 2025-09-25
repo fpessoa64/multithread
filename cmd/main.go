@@ -51,12 +51,12 @@ func fetchViaCEP(cep string, ch chan<- Result) {
 func main() {
 	cep := "01153000"
 	ch := make(chan types.Result, 2)
-
-	brApi := workers.NewBrasilApi()
-	go brApi.Fetch(cep, ch)
-
-	viaApi := workers.NewViaCepApi()
-	go viaApi.Fetch(cep, ch)
+	var apis []types.ConsultCep
+	apis = append(apis, workers.NewBrasilApi())
+	apis = append(apis, workers.NewViaCepApi())
+	for _, api := range apis {
+		go api.Fetch(cep, ch)
+	}
 
 	timeout := time.After(1 * time.Second)
 

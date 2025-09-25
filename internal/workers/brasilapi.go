@@ -18,7 +18,7 @@ func NewBrasilApi() *BrasilApi {
 	return &BrasilApi{}
 }
 
-func (b *BrasilApi) Fetch(cep string, ch chan<- types.Result) error {
+func (b *BrasilApi) Fetch(cep string, ch chan<- types.Result) {
 	url := fmt.Sprintf("https://brasilapi.com.br/api/cep/v1/%s", cep)
 	resp, err := http.Get(url)
 	if err != nil {
@@ -26,7 +26,7 @@ func (b *BrasilApi) Fetch(cep string, ch chan<- types.Result) error {
 			Source: BrasilApiName,
 			Err:    err,
 		}
-		return err
+		return
 	}
 	defer resp.Body.Close()
 
@@ -35,7 +35,7 @@ func (b *BrasilApi) Fetch(cep string, ch chan<- types.Result) error {
 			Source: BrasilApiName,
 			Err:    fmt.Errorf("unexpected status code: %d", resp.StatusCode),
 		}
-		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+		return
 	}
 
 	body, err := io.ReadAll(resp.Body)
@@ -44,7 +44,7 @@ func (b *BrasilApi) Fetch(cep string, ch chan<- types.Result) error {
 			Source: BrasilApiName,
 			Err:    err,
 		}
-		return err
+		return
 	}
 
 	var data map[string]interface{}
@@ -53,12 +53,12 @@ func (b *BrasilApi) Fetch(cep string, ch chan<- types.Result) error {
 			Source: BrasilApiName,
 			Err:    err,
 		}
-		return err
+		return
 	}
 
 	ch <- types.Result{
 		Source: BrasilApiName,
 		Data:   data,
 	}
-	return nil
+	return
 }
