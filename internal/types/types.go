@@ -8,4 +8,5 @@ type Result struct {
 
 type ConsultCep interface {
 	Fetch(cep string, ch chan<- Result)
+	ToString(result Result) string
 }

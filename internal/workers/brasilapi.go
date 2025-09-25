@@ -11,11 +11,35 @@ import (
 
 const BrasilApiName = "brasilapi"
 
+type dataBrasilApi struct {
+	CEP          string `json:"cep"`
+	State        string `json:"state"`
+	City         string `json:"city"`
+	Neighborhood string `json:"neighborhood"`
+	Street       string `json:"street"`
+	Service      string `json:"service"`
+}
+
 type BrasilApi struct {
 }
 
 func NewBrasilApi() *BrasilApi {
 	return &BrasilApi{}
+}
+
+func (b *BrasilApi) ToString(result types.Result) string {
+
+	var data dataBrasilApi
+	jsonBytes, err := json.Marshal(result.Data)
+	if err != nil {
+		return fmt.Sprintf("Error marshaling data: %v", err)
+	}
+	err = json.Unmarshal(jsonBytes, &data)
+	if err != nil {
+		return fmt.Sprintf("Error parsing data: %v", err)
+	}
+
+	return fmt.Sprintf("%s: %v", result.Source, data)
 }
 
 func (b *BrasilApi) Fetch(cep string, ch chan<- types.Result) {
@@ -60,5 +84,4 @@ func (b *BrasilApi) Fetch(cep string, ch chan<- types.Result) {
 		Source: BrasilApiName,
 		Data:   data,
 	}
-	return
 }

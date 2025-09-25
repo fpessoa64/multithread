@@ -11,11 +11,34 @@ import (
 
 const ViaCepApiName = "viacep"
 
+type dataViaCepApi struct {
+	CEP          string `json:"cep"`
+	State        string `json:"state"`
+	City         string `json:"city"`
+	Neighborhood string `json:"neighborhood"`
+	Street       string `json:"street"`
+	Service      string `json:"service"`
+}
+
 type ViaCepApi struct {
 }
 
 func NewViaCepApi() *ViaCepApi {
 	return &ViaCepApi{}
+}
+
+func (v *ViaCepApi) ToString(result types.Result) string {
+	var data dataViaCepApi
+	jsonBytes, err := json.Marshal(result.Data)
+	if err != nil {
+		return fmt.Sprintf("Error marshaling data: %v", err)
+	}
+	err = json.Unmarshal(jsonBytes, &data)
+	if err != nil {
+		return fmt.Sprintf("Error parsing data: %v", err)
+	}
+
+	return fmt.Sprintf("%s: %v", result.Source, data)
 }
 
 func (v *ViaCepApi) Fetch(cep string, ch chan<- types.Result) {
