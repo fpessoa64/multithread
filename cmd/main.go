@@ -54,7 +54,7 @@ func main() {
 
 	ch := make(chan types.Result, 2)
 	var apis []types.ConsultCep
-	//apis = append(apis, workers.NewBrasilApi())
+	apis = append(apis, workers.NewBrasilApi())
 	apis = append(apis, workers.NewViaCepApi())
 	for _, api := range apis {
 		go api.Fetch(cep, ch)
