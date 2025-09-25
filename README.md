@@ -13,10 +13,12 @@ Este projeto realiza consultas de CEP utilizando múltiplas APIs de forma concor
    cd multithread
    ```
 
-2. Execute o programa principal:
+2. Execute o programa principal informando o CEP desejado:
    ```sh
-   go run cmd/main.go
+   go run cmd/main.go --cep=01001000
    ```
+
+   Se não informar o parâmetro `--cep`, será usado o valor padrão `01153000`.
 
 3. O resultado será exibido no terminal, mostrando a resposta das APIs consultadas.
 

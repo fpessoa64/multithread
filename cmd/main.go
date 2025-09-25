@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"time"
@@ -15,40 +16,11 @@ type Result struct {
 	Err    error
 }
 
-// func fetchBrasilAPI(cep string, ch chan<- Result) {
-// 	url := fmt.Sprintf("https://brasilapi.com.br/api/cep/v1/%s", cep)
-// 	resp, err := http.Get(url)
-// 	if err != nil {
-// 		ch <- Result{Source: "BrasilAPI", Err: err}
-// 		return
-// 	}
-// 	defer resp.Body.Close()
-// 	var data map[string]interface{}
-// 	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
-// 		ch <- Result{Source: "BrasilAPI", Err: err}
-// 		return
-// 	}
-// 	ch <- Result{Source: "BrasilAPI", Data: data}
-// }
-
-// func fetchViaCEP(cep string, ch chan<- Result) {
-// 	url := fmt.Sprintf("http://viacep.com.br/ws/%s/json/", cep)
-// 	resp, err := http.Get(url)
-// 	if err != nil {
-// 		ch <- Result{Source: "ViaCEP", Err: err}
-// 		return
-// 	}
-// 	defer resp.Body.Close()
-// 	var data map[string]interface{}
-// 	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
-// 		ch <- Result{Source: "ViaCEP", Err: err}
-// 		return
-// 	}
-// 	ch <- Result{Source: "ViaCEP", Data: data}
-// }
-
 func main() {
-	cep := "01153000"
+	var cep string
+	flag.StringVar(&cep, "cep", "01153000", "CEP para consulta")
+	flag.Parse()
+
 	seconds := 1
 	log.Printf("Iniciando consulta de CEPs... %s", cep)
 
